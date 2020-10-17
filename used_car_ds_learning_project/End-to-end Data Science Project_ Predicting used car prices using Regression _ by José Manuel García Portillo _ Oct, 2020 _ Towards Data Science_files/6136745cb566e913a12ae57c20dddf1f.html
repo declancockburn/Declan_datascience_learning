@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!-- saved from url=(0069)https://towardsdatascience.com/media/6136745cb566e913a12ae57c20dddf1f -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Medium</title><meta name="twitter:widgets:csp" content="on"><meta name="robots" content="noindex"><!--<base target="_blank">--><base href="." target="_blank"><style>body {text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: "ff-tisa-web-pro", Georgia, Cambria, "Times New Roman", Times, serif; font-weight: 400; color: #333332; font-size: 18px; line-height: 1.4; margin: 0; background-color: white; overflow: hidden;}iframe {max-width: 100%;}</style></head><body><style>.gist .gist-file { margin-bottom: 0 !important; }.gist { text-rendering: auto; }</style><script src="./82bc681aa880cee6b9a1c8e1de72fdad..download" charset="utf-8"></script><link rel="stylesheet" href="./gist-embed-00e78e58c090554178aab653e86.css"><div id="gist105912697" class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-used-car-prices" class="file my-2">
+    
+
+  <div itemprop="text" class="Box-body p-0 blob-wrapper data type-text  ">
+      
+<table class="highlight tab-size js-file-line-container" data-tab-size="8" data-paste-markdown-skip="">
+      <tbody><tr>
+        <td id="file-used-car-prices-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-used-car-prices-LC1" class="blob-code blob-code-inner js-file-line">import re</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-used-car-prices-LC2" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-used-car-prices-LC3" class="blob-code blob-code-inner js-file-line">manufacturer = '(gmc | hyundai | toyota | mitsubishi | ford | chevrolet | ram | buick | jeep | dodge | subaru | nissan | audi | rover  | lexus \</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-used-car-prices-LC4" class="blob-code blob-code-inner js-file-line">| honda | chrysler | mini | pontiac | mercedes-benz | cadillac | bmw | kia | volvo | volkswagen | jaguar | acura | saturn | mazda | \</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L5" class="blob-num js-line-number" data-line-number="5"></td>
+        <td id="file-used-car-prices-LC5" class="blob-code blob-code-inner js-file-line">mercury | lincoln | infiniti | ferrari | fiat | tesla | land rover | harley-davidson | datsun | alfa-romeo | morgan | aston-martin | porche \</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L6" class="blob-num js-line-number" data-line-number="6"></td>
+        <td id="file-used-car-prices-LC6" class="blob-code blob-code-inner js-file-line">| hennessey)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L7" class="blob-num js-line-number" data-line-number="7"></td>
+        <td id="file-used-car-prices-LC7" class="blob-code blob-code-inner js-file-line">condition = '(excellent | good | fair | like new | salvage | new)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L8" class="blob-num js-line-number" data-line-number="8"></td>
+        <td id="file-used-car-prices-LC8" class="blob-code blob-code-inner js-file-line">fuel = '(gas | hybrid | diesel |electric)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L9" class="blob-num js-line-number" data-line-number="9"></td>
+        <td id="file-used-car-prices-LC9" class="blob-code blob-code-inner js-file-line">title_status = '(clean | lien | rebuilt | salvage | missing | parts only)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L10" class="blob-num js-line-number" data-line-number="10"></td>
+        <td id="file-used-car-prices-LC10" class="blob-code blob-code-inner js-file-line">transmission = '(automatic | manual)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L11" class="blob-num js-line-number" data-line-number="11"></td>
+        <td id="file-used-car-prices-LC11" class="blob-code blob-code-inner js-file-line">drive = '(4x4 | awd | fwd | rwd | 4wd)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L12" class="blob-num js-line-number" data-line-number="12"></td>
+        <td id="file-used-car-prices-LC12" class="blob-code blob-code-inner js-file-line">size = '(mid-size | full-size | compact | sub-compact)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L13" class="blob-num js-line-number" data-line-number="13"></td>
+        <td id="file-used-car-prices-LC13" class="blob-code blob-code-inner js-file-line">type_ = '(sedan | truck | SUV | mini-van | wagon | hatchback | coupe | pickup | convertible | van | bus | offroad)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L14" class="blob-num js-line-number" data-line-number="14"></td>
+        <td id="file-used-car-prices-LC14" class="blob-code blob-code-inner js-file-line">paint_color = '(red | grey | blue | white | custom | silver | brown | black | purple | green | orange | yellow)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L15" class="blob-num js-line-number" data-line-number="15"></td>
+        <td id="file-used-car-prices-LC15" class="blob-code blob-code-inner js-file-line">cylinders = '(\s[1-9] cylinders? |\s1[0-6]? cylinders?)'</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L16" class="blob-num js-line-number" data-line-number="16"></td>
+        <td id="file-used-car-prices-LC16" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L17" class="blob-num js-line-number" data-line-number="17"></td>
+        <td id="file-used-car-prices-LC17" class="blob-code blob-code-inner js-file-line">keys =    ['manufacturer', 'condition', 'fuel', 'title_status', 'transmission', 'drive','size', 'type', 'paint_color' , 'cylinders']</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L18" class="blob-num js-line-number" data-line-number="18"></td>
+        <td id="file-used-car-prices-LC18" class="blob-code blob-code-inner js-file-line">columns = [ manufacturer,   condition,   fuel,  title_status, transmission ,drive, size, type_, paint_color,   cylinders]</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L19" class="blob-num js-line-number" data-line-number="19"></td>
+        <td id="file-used-car-prices-LC19" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L20" class="blob-num js-line-number" data-line-number="20"></td>
+        <td id="file-used-car-prices-LC20" class="blob-code blob-code-inner js-file-line">for i,column in zip(keys,columns):</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L21" class="blob-num js-line-number" data-line-number="21"></td>
+        <td id="file-used-car-prices-LC21" class="blob-code blob-code-inner js-file-line">    database[i] = database[i].fillna(</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L22" class="blob-num js-line-number" data-line-number="22"></td>
+        <td id="file-used-car-prices-LC22" class="blob-code blob-code-inner js-file-line">      database['description'].str.extract(column, flags=re.IGNORECASE, expand=False)).str.lower()</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L23" class="blob-num js-line-number" data-line-number="23"></td>
+        <td id="file-used-car-prices-LC23" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-used-car-prices-L24" class="blob-num js-line-number" data-line-number="24"></td>
+        <td id="file-used-car-prices-LC24" class="blob-code blob-code-inner js-file-line">database.drop('description', axis=1, inplace= True)</td>
+      </tr>
+</tbody></table>
+
+
+  </div>
+
+  </div>
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/josem-gp/82bc681aa880cee6b9a1c8e1de72fdad/raw/55fc723a94c29c6a1e91796b1da9c469cde87b71/Used%20car%20prices" style="float:right">view raw</a>
+        <a href="https://gist.github.com/josem-gp/82bc681aa880cee6b9a1c8e1de72fdad#file-used-car-prices">Used car prices</a>
+        hosted with ❤ by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div>
+<script>var height = -1; var delayMs = 200; if (document) {document.domain = document.domain;}function notifyResize(height) {height = height ? height : document.documentElement.offsetHeight; var resized = false; if (window.donkey && donkey.resize) {donkey.resize(height);var elements = document.getElementsByClassName("gist-data"); for (var i = 0; i < elements.length; i++) {elements[i].style.overflow = "visible"}resized = true;}if (parent && parent._resizeIframe) {var obj = {iframe: window.frameElement, height: height}; parent._resizeIframe(obj); resized = true;}if (window.location && window.location.hash === "#amp=1" && window.parent && window.parent.postMessage) {window.parent.postMessage({sentinel: "amp", type: "embed-size", height: height}, "*");}if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.resize) {window.webkit.messageHandlers.resize.postMessage(height); resized = true;}return resized;}function maybeResize() {try {if (document.documentElement.offsetHeight != height && notifyResize()) {height = document.documentElement.offsetHeight;}delayMs = Math.min(delayMs * 2, 1000000); setTimeout(maybeResize, delayMs);} catch(error) {console.log('maybeResize error: ', error)}}maybeResize();</script></body></html>
