@@ -14,8 +14,10 @@ def test_split_array_works():
                         [4,5,6]])
     assert actual == pytest.approx(expected), f"Expected {expected}, got {actual}"
 
-    # example_data_str = str(example_data)
-    # with pytest.raises(ValueError):
-    #     split_array_in_two(example_data_str)
+    example_data_str = str(example_data)
+    # Todo: expand on this, what's it used for etc.
+    with pytest.raises(ValueError):
+        split_array_in_two(example_data_str)
 
-# test_split_array_works()
+
+test_split_array_works()
