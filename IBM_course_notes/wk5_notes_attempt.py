@@ -2,9 +2,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict
+from sklearn.model_selection import GridSearchCV
 
 # Import clean data
 path = 'https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/DA0101EN/module_5_auto.csv'
@@ -163,6 +164,121 @@ distribution_plot(yhat_train, y_train, 'predicted', 'actual', 'Prediction of tra
 
 yhat_test = poly1.predict(x_test_pr1)
 distribution_plot(yhat_test, y_test, 'predicted', 'actual', 'Prediction of test data')
+
+## Ridge regression!
+
+# make a poly transform of the data
+pr = PolynomialFeatures(degree=2)
+x_feat = ['horsepower', 'curb-weight', 'engine-size', 'highway-mpg', 'normalized-losses', 'symboling']
+x_train_pr = pr.fit_transform(x_train[x_feat])
+x_test_pr = pr.fit_transform(x_test[x_feat])
+
+# Declare the model
+ridge_model = Ridge(alpha=0.1)
+# Fit the model
+ridge_model.fit(x_train_pr, y_train)
+
+
+yhat = ridge_model.predict(x_test_pr)
+
+ridge_model.score(x_train_pr,y_train)
+ridge_model.score(x_test_pr,y_test)
+
+print('predicted:', yhat[0:4])
+print('test set :', y_test[0:4].values)
+
+# let's plot the r^2 vals
+
+r2_test, r2_train, dummy1 = [], [], []
+alpha = 10*np.array(range(0,1000))
+
+for a in alpha:
+    ridge_model = Ridge(alpha=a)
+    ridge_model.fit(x_train_pr, y_train)
+    r2_test.append(ridge_model.score(x_test_pr, y_test))
+    r2_train.append(ridge_model.score(x_train_pr, y_train))
+
+plt.plot(alpha, r2_test, label='validation data')
+plt.plot(alpha, r2_train, label='training data')
+plt.xlabel('alpha')
+plt.ylabel('R^2')
+
+# How can I do better? Make a log array, or 10^ array... let's try
+
+## repeat of last but own try
+
+r2_test, r2_train, dummy1 = [], [], []
+alpha_pwr = np.arange(-4, 15, 0.1)
+alpha = 10**alpha_pwr
+
+for a in alpha:
+    ridge_model = Ridge(alpha=a)
+    ridge_model.fit(x_train_pr, y_train)
+    r2_test.append(ridge_model.score(x_test_pr, y_test))
+    r2_train.append(ridge_model.score(x_train_pr, y_train))
+
+
+plt.plot(alpha_pwr, r2_test, label='validation data')
+plt.plot(alpha_pwr, r2_train, label='training data')
+plt.xlabel('alpha^x')
+plt.ylabel('R^2')
+
+idx_max = np.array(r2_test).argmax()
+alpha_optimal_pwr = alpha_pwr[idx_max]
+alpha_optimal = alpha[idx_max]
+np.testing.assert_almost_equal(alpha_optimal, 10**alpha_optimal_pwr)
+alpha_optimal
+10**alpha_optimal_pwr
+
+# Note: looks like optimal alpha is actually 2e10 here...
+# I wonder why so high?
+
+## Anyway onto grid search
+# actually prob do what I was just doing above, cool
+
+# Make geomspace (lin spaced but on log scale, this is powers of 10)
+params = [{'alpha': np.geomspace(1e-3, 1e11, 100)}]
+# params = [{'alpha': np.arange(1000, 100000, 500)}]
+
+# Create non-parameterized RR instance.
+RR = Ridge()
+# Now a grid search instance object for searching.
+# (CV=cross-validated, so it will split the data too)
+# Supply the
+grid1 = GridSearchCV(RR, params, cv=3)
+# Different sub-selection of features for some reason...
+x_feat2 = ['horsepower', 'curb-weight', 'engine-size', 'highway-mpg', 'normalized-losses', 'symboling']
+# Fit to non-split data... actually no shouldn't. only on training data.
+# Despite what's done in the notebook.
+# Actually no it's ok, but can't test on x_test anymore.
+grid1.fit(x_train[x_feat2], y_train)
+
+best_rr = grid1.best_estimator_
+
+print(grid1.best_score_)
+print(best_rr)
+# This is testing on the data it was trained on
+best_rr.score(x_test[x_feat2], y_test)
+
+## Run grid search again, and look at scores to believe them
+# Write your code below and press Shift+Enter to execute
+x_feat2 = ['horsepower', 'curb-weight', 'engine-size', 'highway-mpg', 'normalized-losses', 'symboling']
+ridge2 = Ridge()
+params2 = [{'alpha':np.geomspace(1e-3,1e10,50), 'normalize':[True, False]}]
+# params2 = [{'normalize':[True, False]}]
+grid2 = GridSearchCV(ridge2, params2, cv=3)
+grid2.fit(x_data[x_feat2], y_data)
+print(grid2.best_score_)
+print(grid2.best_estimator_) # best trained model of the 3
+scores = grid2.cv_results_
+
+
+df_score = pd.DataFrame(scores)
+
+
+
+
+
 
 
 
